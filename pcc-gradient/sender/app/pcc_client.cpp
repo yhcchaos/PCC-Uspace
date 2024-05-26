@@ -183,6 +183,7 @@ DWORD WINAPI monitor(LPVOID s)
          cout << "perfmon: " << UDT::getlasterror().getErrorMessage() << endl;
          break;
       }
+      
     cout << perf.mbpsSendRate << "\t\t"
            << perf.msRTT << "\t"
            <<  perf.pktSentTotal << "\t"
