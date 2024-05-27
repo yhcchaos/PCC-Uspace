@@ -21,4 +21,4 @@ and in a separate terminal, run:
 cd src
 export LD\_LIBRARY\_PATH=$LD\_LIBRARY\_PATH:`pwd`/core/
 ./app/pccclient send 127.0.0.1 9000
-(this create a PCC client that connects to the local host (IP 127.0.0.1) at port 9000, then sends data to the server at that address.
+this create a PCC client that connects to the local host (IP 127.0.0.1) at port 9000, then sends data to the server at that address.
