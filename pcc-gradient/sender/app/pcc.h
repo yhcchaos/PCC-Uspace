@@ -107,11 +107,12 @@ class PCC : public CCC {
         double_check = 1;
         loss_ignore_count = 50;
         last_stop_monitor = -1;
-        cerr << "new Code!!!" << endl;
-        cerr << "configuration: alpha = " << alpha_ << ", beta = " << beta_   <<
-             ", exponent = " << exponent_ <<
-             ", factor = " << factor_ << ", step = " << step_ << endl;
-
+        #ifdef DEBUG
+            cerr << "new Code!!!" << endl;
+            cerr << "configuration: alpha = " << alpha_ << ", beta = " << beta_   <<
+                ", exponent = " << exponent_ <<
+                ", factor = " << factor_ << ", step = " << step_ << endl;
+        #endif
         /*
         if (!latency_mode) {
         	beta_ = 0;
@@ -143,6 +144,7 @@ class PCC : public CCC {
 #ifdef DEBUG
         cerr<<"Timeout happens to monitor "<<endMonitor<<endl;
 #endif
+
         //if(!(deviation_immune_monitor != -1 && deviation_immune_monitor != endMonitor)) {
         deviation_immune_monitor = -1;
         //}
@@ -656,7 +658,10 @@ class PCC : public CCC {
 
                         double change = decide(move_stat.reference_utility, move_stat.target_utility,
                                                move_stat.reference_rate, move_stat.target_rate, false);
-                        cerr<<"change for move is "<<change<<endl;
+                        #ifdef DEBUG
+                            cerr<<"change for move is "<<change<<endl;
+                        #endif
+                        
                         bool second_guess = false;
                         if((move_stat.reference_rate - move_stat.target_rate) * (move_stat.reference_loss_rate - move_stat.target_loss_rate) <0
                             && (abs(move_stat.reference_loss_pkt - move_stat.target_loss_pkt) > 2 || overall_loss_rate >= 0.05)) {
@@ -668,7 +673,9 @@ class PCC : public CCC {
                            
                         }
                         if (second_guess) {
-                                cerr<<"second guess"<<endl;
+                                #ifdef DEBUG
+                                    cerr<<"second guess"<<endl;
+                                #endif
                                 move_stat.target_monitor = -1;
                                 state_ = SEARCH;
                                 trend_count_ = 2;
@@ -679,8 +686,11 @@ class PCC : public CCC {
 
                         } else {
                             if (change * move_stat.change <= 0) {
-                                cerr<<"direction changed"<<endl;
-                                cerr<<"change is "<<change<<" old change is "<<move_stat.change<<endl;
+                                #ifdef DEBUG
+                                    cerr<<"direction changed"<<endl;
+                                    cerr<<"change is "<<change<<" old change is "<<move_stat.change<<endl;
+                                #endif
+                                
                                 // the direction is different, need to move to old rate start to re-guess
                                 //base_rate_ = move_stat.reference_rate;
                                 base_rate_ = change + base_rate_;
@@ -692,7 +702,10 @@ class PCC : public CCC {
                                 guess_measurement_bucket.clear();
                                 number_of_probes_ = 4;
                             } else {
-                                cerr<<"direction same, keep moving with change of "<<change<<endl;
+                                #ifdef DEBUG
+                                    cerr<<"direction same, keep moving with change of "<<change<<endl;
+                                #endif
+                                
                                 if(change/base_rate_<=0.1) {
                                     base_rate_ = change + base_rate_;
                                     setRate(base_rate_);
